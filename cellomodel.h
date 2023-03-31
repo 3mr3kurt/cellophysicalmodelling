@@ -28,7 +28,7 @@ CelloModel* init_cello_model(float sample_rate){
     model->bow_force = 0.0f;
     model->attack_samples = 0;
     model->vibrato_rate = 20.0f;
-    model->vibrato_depth = 1.0f;
+    model->vibrato_depth = 0.1f;
     model->step = 0;
     return model;
 }
@@ -41,6 +41,7 @@ void set_frequency(CelloModel* model, float frequency){
     memset(model->buffer, 0, new_size*sizeof(float));
 
     model->buffer_size = new_size;
+    model->step = 0;
 }
 
 void bow(CelloModel* model, float force){
@@ -61,7 +62,7 @@ float process(CelloModel* model){
 
     new_sample += model->bow_force*((float)rand()/(float)RAND_MAX*2.0f-1.0f);
 
-    float attack_time = 0.1f; // Adjust this value to change the attack time
+    float attack_time = 0.01f; // Adjust this value to change the attack time
     float attack_samples = attack_time * model->sample_rate;
     // Attack stage
     if (model->attack_samples < attack_samples) {
